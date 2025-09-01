@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import ProductCard from "../components/ProductCard";
-import { useAppContext } from "../context/appContext";
+import { useAppContext } from "../context/AppContext";
 import aboutHero from "../assets/prod.jpg"; // Replace with actual image
 import { motion } from "framer-motion";
 

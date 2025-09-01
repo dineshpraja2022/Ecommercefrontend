@@ -1,5 +1,5 @@
 import ProductCard from "./ProductCard";
-import { useAppContext } from "../context/appContext";
+import { useAppContext } from "../context/AppContext";
 import { motion } from "framer-motion";
 
 const BestSeller = () => {

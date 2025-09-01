@@ -23,7 +23,7 @@ import BrandBondingSection from "./components/BrandBondingSection";
 import EditProductForm from "./pages/seller/EditProductForm";
 import WhatsAppButton from "./components/WhatsAppButton";
 import Dashboard from "./pages/seller/Dashboard";
-import Orderlist from "./pages/seller/orderlist";
+import Orderlist from "./pages/seller/Orderlist";
 import AOS from "aos";
 import "aos/dist/aos.css";
 

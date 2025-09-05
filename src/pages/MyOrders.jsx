@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { AppContext } from "../context/AppContext";
+import { AppContext, BASE_URL } from "../context/AppContext";
 import toast from "react-hot-toast";
 
 const MyOrders = () => {
@@ -172,8 +172,8 @@ const MyOrders = () => {
                   Shri Shivay Textiles
                 </h1>
                 <p className="text-gray-600 text-xs sm:text-sm leading-tight">
-                  Araji 152 Plot No 6, Partapur Majra Rampur, Mahadev Trader And Hardware,
-                  Mardan Pur, Kanpur, Kanpur Nagar-208021, Uttar Pradesh
+                  Araji 152 Plot No 6, Partapur Majra Rampur, Mahadev Trader And
+                  Hardware, Mardan Pur, Kanpur, Kanpur Nagar-208021, Uttar Pradesh
                 </p>
                 <p className="text-gray-600 text-xs sm:text-sm">
                   GSTIN: <strong>09FFOPD8390N1ZH</strong>
@@ -191,9 +191,10 @@ const MyOrders = () => {
                 <p>
                   <span className="font-medium">Order ID:</span> {order._id}
                 </p>
-  
-  <p><span className="font-medium">GST No:</span> {order.gstNumber || "Not Provided"}</p>
-
+                <p>
+                  <span className="font-medium">GST No:</span>{" "}
+                  {order.gstNumber || "Not Provided"}
+                </p>
                 <p>
                   <span className="font-medium">Email:</span> {user.email}
                 </p>
@@ -217,12 +218,13 @@ const MyOrders = () => {
                     ? new Date(order.createdAt).toLocaleString()
                     : "N/A"}
                 </p>
-                
                 <p>
-                  <span className="font-medium">Payment Method:</span> {order.paymentType || "N/A"}
+                  <span className="font-medium">Payment Method:</span>{" "}
+                  {order.paymentType || "N/A"}
                 </p>
                 <p>
-                  <span className="font-medium">Status:</span> {order.status || "Pending"}
+                  <span className="font-medium">Status:</span>{" "}
+                  {order.status || "Pending"}
                 </p>
               </div>
 
@@ -242,23 +244,36 @@ const MyOrders = () => {
                   <tbody>
                     {order.items.map((item, index) => (
                       <tr key={index} className="text-gray-800">
-                        <td className="px-2 sm:px-4 py-2 border">{item?.product?.name || "N/A"}</td>
+                        <td className="px-2 sm:px-4 py-2 border">
+                          {item?.product?.name || "N/A"}
+                        </td>
                         <td className="px-2 sm:px-4 py-2 border">
                           <img
                             src={
-                              item?.product?.image && item.product.image.length > 0
-                                ? `http://localhost:5000/images/${item.product.image[0]}`
+                              item?.product?.image &&
+                              item.product.image.length > 0
+                                ? `${BASE_URL}/images/${item.product.image[0]}`
                                 : "/placeholder.png"
                             }
                             alt={item?.product?.name || "Product Image"}
                             className="w-10 sm:w-14 h-10 sm:h-14 object-cover rounded shadow"
                           />
                         </td>
-                        <td className="px-2 sm:px-4 py-2 border">{item?.product?.category || "N/A"}</td>
-                        <td className="px-2 sm:px-4 py-2 border text-center">{item.quantity || 0}</td>
-                        <td className="px-2 sm:px-4 py-2 border">&#8377;{item?.product?.offerPrice?.toFixed(2) || "0.00"}</td>
+                        <td className="px-2 sm:px-4 py-2 border">
+                          {item?.product?.category || "N/A"}
+                        </td>
+                        <td className="px-2 sm:px-4 py-2 border text-center">
+                          {item.quantity || 0}
+                        </td>
+                        <td className="px-2 sm:px-4 py-2 border">
+                          &#8377;
+                          {item?.product?.offerPrice?.toFixed(2) || "0.00"}
+                        </td>
                         <td className="px-2 sm:px-4 py-2 border font-medium">
-                          &#8377;{(item?.product?.offerPrice * item.quantity)?.toFixed(2) || "0.00"}
+                          &#8377;
+                          {(
+                            item?.product?.offerPrice * item.quantity
+                          )?.toFixed(2) || "0.00"}
                         </td>
                       </tr>
                     ))}
@@ -279,10 +294,13 @@ const MyOrders = () => {
               {/* Footer */}
               <div className="footer mt-8 text-center text-gray-500 text-xs sm:text-sm">
                 <p>
-                  Thank you for shopping with <strong>Shri Shivay Textiles</strong>.
+                  Thank you for shopping with{" "}
+                  <strong>Shri Shivay Textiles</strong>.
                 </p>
                 <p>We appreciate your business. Visit Again!</p>
-                <p className="text-xs">Design By VD Elevate Tech Solutions</p>
+                <p className="text-xs">
+                  Design By VD Elevate Tech Solutions
+                </p>
               </div>
             </div>
 

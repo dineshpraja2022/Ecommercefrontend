@@ -46,6 +46,7 @@ const SingleProduct = () => {
                 >
                   <img
                     src={`http://localhost:5000/images/${image}`}
+
                     alt={`Thumbnail ${index + 1}`}
                   />
                 </div>

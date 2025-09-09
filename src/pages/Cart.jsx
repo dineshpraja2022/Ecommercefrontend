@@ -40,7 +40,7 @@ const RazorpayModal = ({ show, onClose, amount, onSuccess, items, address, gstNu
 
       const options = {
         key: data.key,
-        amount: data.amount * 100, // paise
+        amount: Math.round(data.amount * 100), // Razorpay expects paise
         currency: data.currency,
         name: "My Shop",
         description: "Order Payment",
@@ -136,7 +136,7 @@ const Cart = () => {
   const [paymentOption, setPaymentOption] = useState("COD");
   const [showRazorpayModal, setShowRazorpayModal] = useState(false);
   const [isPlacingOrder, setIsPlacingOrder] = useState(false);
-  const [gstNumber, setGstNumber] = useState(""); // <-- NEW STATE
+  const [gstNumber, setGstNumber] = useState("");
 
   /* -------- Fetch Address -------- */
   useEffect(() => {
@@ -167,10 +167,7 @@ const Cart = () => {
     const tempArray = Object.entries(cartItems)
       .map(([id, qty]) => {
         const product = products.find((p) => p._id === id);
-        if (!product) {
-          console.warn(`Product not found for id ${id}`);
-          return null;
-        }
+        if (!product) return null;
         return { ...product, price: Number(product.offerPrice), quantity: Number(qty) };
       })
       .filter(Boolean);
@@ -185,7 +182,7 @@ const Cart = () => {
 
   const calculateTotalWithTax = useCallback(() => {
     const total = totalCartAmount();
-    return (total + total * 0.12 + 39).toFixed(2); // GST + Shipping
+    return parseFloat(total + total * 0.12 + 39); // GST + Shipping
   }, [totalCartAmount]);
 
   /* -------- Place Order -------- */
@@ -211,7 +208,7 @@ const Cart = () => {
               quantity: item.quantity,
             })),
             address: selectedAddress._id,
-            gstNumber: gstNumber.trim() || undefined, // <-- optional send
+            gstNumber: gstNumber.trim() || undefined,
           },
           { withCredentials: true }
         );
@@ -244,15 +241,12 @@ const Cart = () => {
           <p>Your cart is empty.</p>
         ) : (
           cartArray.map((item) => {
-            // Image URL handling
             const BASE_URL = `${import.meta.env.VITE_BACKEND_URL}/uploads/`;
-            let imageUrl = "";
+            let imageUrl = "https://via.placeholder.com/150x150?text=No+Image";
             if (Array.isArray(item.images) && item.images.length > 0) {
               imageUrl = BASE_URL + item.images[0];
             } else if (typeof item.images === "string" && item.images.trim() !== "") {
               imageUrl = BASE_URL + item.images;
-            } else {
-              imageUrl = "https://via.placeholder.com/150x150?text=No+Images";
             }
 
             return (
@@ -271,9 +265,7 @@ const Cart = () => {
                     <p className="text-gray-500">₹{item.price.toFixed(2)}</p>
                     <div className="flex items-center mt-2">
                       <button
-                        onClick={() =>
-                          updateCartItem(item._id, item.quantity - 1)
-                        }
+                        onClick={() => updateCartItem(item._id, item.quantity - 1)}
                         disabled={item.quantity <= 1}
                         className="px-2 bg-gray-200"
                       >
@@ -281,9 +273,7 @@ const Cart = () => {
                       </button>
                       <span className="px-3">{item.quantity}</span>
                       <button
-                        onClick={() =>
-                          updateCartItem(item._id, item.quantity + 1)
-                        }
+                        onClick={() => updateCartItem(item._id, item.quantity + 1)}
                         className="px-2 bg-gray-200"
                       >
                         +
@@ -292,9 +282,7 @@ const Cart = () => {
                   </div>
                 </div>
                 <div className="text-right">
-                  <p className="font-medium">
-                    ₹{(item.price * item.quantity).toFixed(2)}
-                  </p>
+                  <p className="font-medium">₹{(item.price * item.quantity).toFixed(2)}</p>
                   <button
                     onClick={() => removeFromCart(item._id)}
                     className="text-red-500 text-sm mt-1"
@@ -329,9 +317,9 @@ const Cart = () => {
           </button>
           {showAddress && (
             <div className="absolute top-12 py-1 bg-white border border-gray-300 text-sm w-full z-20 max-h-48 overflow-auto">
-              {address.map((addr, i) => (
+              {address.map((addr) => (
                 <p
-                  key={i}
+                  key={addr._id}
                   onClick={() => {
                     setSelectedAddress(addr);
                     setShowAddress(false);
@@ -351,7 +339,7 @@ const Cart = () => {
           )}
         </div>
 
-        {/* GST Number (optional) */}
+        {/* GST Number */}
         <p className="text-sm font-medium uppercase mt-6">GST Number (Optional)</p>
         <input
           type="text"
@@ -390,7 +378,7 @@ const Cart = () => {
           </p>
           <p className="flex justify-between text-lg font-medium mt-3">
             <span>Total Amount:</span>
-            <span>₹{calculateTotalWithTax()}</span>
+            <span>₹{calculateTotalWithTax().toFixed(2)}</span>
           </p>
         </div>
 
@@ -416,7 +404,7 @@ const Cart = () => {
       <RazorpayModal
         show={showRazorpayModal}
         onClose={() => setShowRazorpayModal(false)}
-        amount={parseFloat(calculateTotalWithTax())}
+        amount={calculateTotalWithTax()}
         items={cartArray.map((item) => ({
           product: item._id,
           quantity: item.quantity,

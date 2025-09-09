@@ -79,55 +79,61 @@ const Products = () => {
             custom={0.8}
             className="mt-3 text-white/80 text-base font-light"
           >
-            Whether you’re looking for stylish dog collars, strong and durable lead ropes, or elegant horse halters, Shri Shivay Textiles delivers the best for your pets and animals. For bulk orders, product inquiries, or partnership opportunities, connect with us.
+            Whether you’re looking for stylish dog collars, strong and durable lead ropes,
+            or elegant horse halters, Shri Shivay Textiles delivers the best for your pets and animals.
+            For bulk orders, product inquiries, or partnership opportunities, connect with us.
           </motion.p>
         </motion.div>
       </section>
 
       {/* Products Section */}
-   {/* Products Section */}
-<div className="mt-24 px-4 md:px-10 min-h-screen">
-  <motion.div
-    initial="hidden"
-    whileInView="visible"
-    viewport={{ once: true }}
-    variants={fadeIn}
-    className="text-center mb-12"
-  >
-    <h1 className="text-4xl md:text-5xl font-extrabold text-gray-800 mb-4">
-      Explore Our Products
-    </h1>
-    <p className="text-gray-600 text-lg max-w-2xl mx-auto">
-      Discover a wide range of quality products available in stock. Choose the best for yourself.
-    </p>
-  </motion.div>
+      <div className="mt-24 px-4 md:px-10 min-h-screen">
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          variants={fadeIn}
+          className="text-center mb-12"
+        >
+          <h1 className="text-4xl md:text-5xl font-extrabold text-gray-800 mb-4">
+            Explore Our Products
+          </h1>
+          <p className="text-gray-600 text-lg max-w-2xl mx-auto">
+            Discover a wide range of quality products available in stock. Choose the best for yourself.
+          </p>
+        </motion.div>
 
-  {filteredProducts.filter((product) => product.inStock).length > 0 ? (
-    <motion.div
-      className="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
-      variants={containerStagger}
-      initial="hidden"
-      animate="visible"
-    >
-      {filteredProducts
-        .filter((product) => product.inStock)
-        .map((product, index) => (
+        {filteredProducts.filter((product) => product.inStock).length > 0 ? (
           <motion.div
-            key={index}
-            variants={fadeIn}
-            custom={index * 0.1}
+            className="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5"
+            variants={containerStagger}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
           >
-            <ProductCard product={product} />
+            {filteredProducts
+              .filter((product) => product.inStock)
+              .map((product, index) => (
+                <motion.div
+                  key={product._id || index}
+                  variants={fadeIn}
+                  custom={index * 0.1}
+                >
+                  <ProductCard product={product} />
+                </motion.div>
+              ))}
           </motion.div>
-        ))}
-    </motion.div>
-  ) : (
-    <div className="text-center py-20 text-gray-500 text-xl">
-      No products found.
-    </div>
-  )}
-</div>
-
+        ) : (
+          <motion.div
+            className="text-center py-20 text-gray-500 text-xl"
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{ duration: 0.6 }}
+          >
+            🚫 No products found. Try adjusting your search!
+          </motion.div>
+        )}
+      </div>
     </div>
   );
 };

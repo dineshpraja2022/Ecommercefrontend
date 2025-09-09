@@ -4,10 +4,13 @@ import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import axios from "axios";
 
-// ✅ Dynamic backend URL setup
+// ✅ Define backend URL (Render ka URL use karo)
+export const BASE_URL =
+  import.meta.env.VITE_BACKEND_URL || "https://your-backend.onrender.com";
+
+// ✅ Axios default setup
 axios.defaults.withCredentials = true;
-axios.defaults.baseURL =
-  import.meta.env.VITE_BACKEND_URL || "http://localhost:5000";
+axios.defaults.baseURL = BASE_URL;
 
 export const AppContext = createContext(null);
 
@@ -142,6 +145,7 @@ export const AppContextProvider = ({ children }) => {
     axios,
     fetchProducts,
     setCartItems,
+    BASE_URL, // ✅ Exported for product images etc.
   };
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;

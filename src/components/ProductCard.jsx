@@ -20,7 +20,8 @@ const ProductCard = ({ product }) => {
         {/* Product Image */}
         <div className="relative flex items-center justify-center overflow-hidden rounded-xl bg-gray-50 h-44">
           <img
-            src={`https://backend.vercel.app/images/${product.image[0]}`}
+           src={`https://your-app-name.onrender.com/images/${product.image[0]}`}
+
 
             alt={product.name}
             className="max-h-36 object-contain transform group-hover:scale-110 transition-transform duration-500"
